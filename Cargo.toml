@@ -1,5 +1,5 @@
 [package]
-name = "helloworld_in_r_and_r"
+name = "helloworld_in_riscv_and_baremetal_rust"
 version = "0.1.0"
 edition = "2021"
 
