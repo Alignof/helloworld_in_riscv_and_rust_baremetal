@@ -2,8 +2,9 @@
 hello world in RISC-V / bare-metal Rust.
 
 ## run
-Required qemu-system-riscv64.
+Required qemu-system-riscv64 and target "riscv64imac-unknown-none-elf".
 ```
+$ rustup target add riscv64imac-unknown-none-elf
 $ cargo r
 ```
 
