@@ -2,9 +2,11 @@
 #![no_std]
 
 use core::arch::global_asm;
+use core::panic::PanicInfo;
 
 global_asm!(
     r#"
+.align 2
 .option norvc
 .section .reset.boot, "ax",@progbits
 .global _start
@@ -12,7 +14,7 @@ global_asm!(
 
 _start:
     /* Set up stack pointer. */
-    lla      sp, stacks_end
+    la      sp, stacks_end
     /* Now jump to the rust world; __start_rust.  */
     j       __start_rust
 
@@ -37,7 +39,6 @@ pub extern "C" fn __start_rust() -> ! {
     loop {}
 }
 
-use core::panic::PanicInfo;
 #[panic_handler]
 #[no_mangle]
 pub fn panic(_info: &PanicInfo) -> ! {
