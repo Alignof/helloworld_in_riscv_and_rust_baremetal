@@ -1,32 +1,12 @@
 #![no_main]
 #![no_std]
 
-use core::arch::global_asm;
-use core::panic::PanicInfo;
+extern crate panic_halt;
 
-global_asm!(
-    r#"
-.align 2
-.option norvc
-.section .reset.boot, "ax",@progbits
-.global _start
-.global abort
+use riscv_rt::entry;
 
-_start:
-    /* Set up stack pointer. */
-    la      sp, stacks_end
-    /* Now jump to the rust world; __start_rust.  */
-    j       __start_rust
-
-.bss
-stacks:
-    .skip 1024
-stacks_end:
-"#
-);
-
-#[no_mangle]
-pub extern "C" fn __start_rust() -> ! {
+#[entry]
+fn main() -> ! {
     let uart = 0x1001_0000 as *mut u32;
 
     for c in b"Hello from Rust!\n".iter() {
@@ -36,16 +16,5 @@ pub extern "C" fn __start_rust() -> ! {
         }
     }
 
-    loop {}
-}
-
-#[panic_handler]
-#[no_mangle]
-pub fn panic(_info: &PanicInfo) -> ! {
-    loop {}
-}
-
-#[no_mangle]
-pub extern "C" fn abort() -> ! {
     loop {}
 }
