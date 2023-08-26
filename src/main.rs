@@ -6,6 +6,7 @@ extern crate panic_halt;
 use riscv_rt::entry;
 
 #[entry]
+#[allow(clippy::empty_loop)]
 fn main() -> ! {
     let uart = 0x1001_0000 as *mut u32;
 
